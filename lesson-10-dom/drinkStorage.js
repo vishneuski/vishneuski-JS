@@ -16,8 +16,6 @@ drinkStorage.addValue('Молочный коктейль', {
   'время приготовления': '5 мин'
 });
 
-console.log(drinkStorage);
-
 document.querySelector('.setDrinkInfo').addEventListener('click', function () {
   var setList = '';
   var cocktaile = prompt('Введите название напитка', '');
