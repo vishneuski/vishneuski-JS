@@ -11,17 +11,14 @@ const hourHandWidth = 10;
 const minuteHandWidth = 5;
 const secondHandWidth = 2;
 
-
-setInterval(tickTimer, 1000);
-
-// UI
-
 var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
 context.translate(baseRadius / 2, baseRadius / 2);
 
 createWatch();
 setInterval(tickTimer, 1000);
+
+// UI
 
 function createWatch() {
   createCanvasClockFace(context);
