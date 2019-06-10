@@ -78,7 +78,6 @@ var RacketHArea = {
 
 RacketH.update();
 
-
 //*******************************   UI    ********************************************
 function createGame() {
   gameField = document.createElement('div');
@@ -87,7 +86,6 @@ function createGame() {
   gameField.appendChild(createStartButton());
   gameField.appendChild(createScore());
   gameField.appendChild(createField());
-
   return gameField;
 }
 
@@ -115,7 +113,6 @@ function createScore() {
   gameScore.style.width = GameScoreWidth + 'px';
   gameScore.style.height = GameScoreHeight + 'px';
   showScore();
-
   return gameScore;
 }
 
@@ -146,7 +143,6 @@ function createBall() {
   ball.style.position = 'absolute';
   ball.style.width = BallWidth + 'px';
   ball.style.height = BallHeight + 'px';
-
   return ball;
 }
 
