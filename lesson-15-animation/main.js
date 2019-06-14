@@ -22,61 +22,65 @@ const BallHeight = 30;
 
 var score1 = 0; // счет первого игрока
 var score2 = 0; // счет вторго игрока
-var racket1; // первая ракетка
-var racket2; // вторая ракетка
 
 wrapper.appendChild(createGame());
 requestAnimationFrame(tick);
 
 // ********************************               BALL            *****************************
-var BallH = {
-  PosX: field.getBoundingClientRect().width / 2 - BallHeight / 2,
-  PosY: field.getBoundingClientRect().height / 2 - BallWidth / 2,
-  SpeedX: 0,
-  SpeedY: 0,
-  width: BallWidth,
-  height: BallHeight,
-  update: function () {
+function Ball(width, height, x, y, speedX, speedY) {
+  var self = this;
+  self.width = width;
+  self.height = height;
+  self.PosX = x;
+  self.PosY = y;
+  self.SpeedX = speedX;
+  self.SpeedY = speedY;
+
+  self.update = function () {
     var BallObj = document.getElementById('ball');
-    BallObj.style.left = this.PosX + "px";
-    BallObj.style.top = this.PosY + "px";
+    BallObj.style.left = self.PosX + "px";
+    BallObj.style.top = self.PosY + "px";
   }
-};
+}
 
-var BallHArea = {
-  width: field.getBoundingClientRect().width,
-  height: field.getBoundingClientRect().height,
-};
+function BallArea(width, height) {
+  var self = this;
+  self.width = width;
+  self.height = height;
+}
 
+var BallH = new Ball(BallWidth, BallHeight, FieldWidth / 2 - BallWidth / 2, FieldHeight / 2 - BallHeight / 2, 0, 0);
+var BallHArea = new BallArea(FieldWidth, FieldHeight);
 
 //*************************************         RACKETS         *****************************
-var RacketH = {
-  width: RacketWidth,
-  height: RacketHeight,
-  racket1PosX: field.getBoundingClientRect().left,
-  racket1PosY: FieldHeight / 2 - RacketHeight / 2,
-  racket1Speed: 0,
+function Racket(width, height, posX, posY, speed, id) {
+  var self = this;
+  self.width = width;
+  self.height = height;
+  self.posX = posX;
+  self.posY = posY;
+  self.speed = speed;
+  self.id = id;
 
-  racket2PosX: FieldWidth - RacketWidth,
-  racket2PosY: FieldHeight / 2 - RacketHeight / 2,
-  racket2Speed: 0,
-
-  update: function () {
-    var racket1Obj = document.getElementById('racket1');
-    var racket2Obj = document.getElementById('racket2');
-    racket1Obj.style.left = this.racket1PosX + "px";
-    racket1Obj.style.top = this.racket1PosY + "px";
-    racket2Obj.style.left = this.racket2PosX + "px";
-    racket2Obj.style.top = this.racket2PosY + "px";
+  self.update = function () {
+    var racketObj = document.getElementById(self.id);
+    racketObj.style.left = self.posX + "px";
+    racketObj.style.top = self.posY + "px";
   }
-};
+}
 
-var RacketHArea = {
-  width: field.getBoundingClientRect().width,
-  height: field.getBoundingClientRect().height,
-};
+function RacketArea(width, height) {
+  var self = this;
+  self.width = width;
+  self.height = height;
+}
 
-RacketH.update();
+var racket1 = new Racket(RacketWidth, RacketHeight, field.getBoundingClientRect().left, FieldHeight / 2 - RacketHeight / 2, 0, 'racket1');
+var racket2 = new Racket(RacketWidth, RacketHeight, FieldWidth - RacketWidth, FieldHeight / 2 - RacketHeight / 2, 0, 'racket2');
+var RacketHArea = new RacketArea(FieldWidth, FieldHeight);
+
+racket1.update();
+racket2.update();
 
 //*******************************   UI    ********************************************
 function createGame() {
@@ -155,19 +159,19 @@ function keyDownFunction(EO) {
 
   EO.preventDefault();
   if (EO.keyCode === 17) {
-    RacketH.racket1Speed = 5;
+    racket1.speed = 5;
 
   }
   if (EO.keyCode === 16) {
-    RacketH.racket1Speed = -5;
+    racket1.speed = -5;
 
   }
   if (EO.keyCode === 40) {
-    RacketH.racket2Speed = 5;
+    racket2.speed = 5;
 
   }
   if (EO.keyCode === 38) {
-    RacketH.racket2Speed = -5;
+    racket2.speed = -5;
   }
 }
 
@@ -176,19 +180,19 @@ function keyUpFunction(EO) {
   EO.preventDefault();
 
   if (EO.keyCode === 17) {
-    RacketH.racket1Speed = 0;
-  }
+    racket1.speed = 0;
 
+  }
   if (EO.keyCode === 16) {
-    RacketH.racket1Speed = 0;
-  }
+    racket1.speed = 0;
 
+  }
   if (EO.keyCode === 40) {
-    RacketH.racket2Speed = 0;
-  }
+    racket2.speed = 0;
 
+  }
   if (EO.keyCode === 38) {
-    RacketH.racket2Speed = 0;
+    racket2.speed = 0;
   }
 }
 
@@ -202,26 +206,26 @@ function startGame() {
 
 function tick() {
   BallH.PosX += BallH.SpeedX;
-  if (BallH.PosX + BallH.width > BallHArea.width - RacketH.width) {
-    if (BallH.PosY + BallH.height < RacketH.racket2PosY || BallH.PosY > RacketH.racket2PosY + RacketH.height) {
+  if (BallH.PosX + BallH.width > BallHArea.width - RacketWidth) {
+    if (BallH.PosY + BallH.height < racket2.posY || BallH.PosY > racket2.posY + RacketHeight) {
       score1 += 1;
       BallH.SpeedX = 0;
       BallH.SpeedY = 0;
       showScore();
     }
     BallH.SpeedX = -BallH.SpeedX;
-    BallH.PosX = BallHArea.width - BallH.width - RacketH.width;
+    BallH.PosX = BallHArea.width - BallH.width - RacketWidth;
   }
 
-  if (BallH.PosX < RacketH.width) {
-    if (BallH.PosY + BallH.height < RacketH.racket1PosY || BallH.PosY > RacketH.racket1PosY + RacketH.height) {
+  if (BallH.PosX < RacketWidth) {
+    if (BallH.PosY + BallH.height < racket1.posY || BallH.PosY > racket1.posY + RacketHeight) {
       score2 += 1;
       BallH.SpeedX = 0;
       BallH.SpeedY = 0;
       showScore();
     }
     BallH.SpeedX = -BallH.SpeedX;
-    BallH.PosX = RacketH.width;
+    BallH.PosX = RacketWidth;
   }
 
   BallH.PosY += BallH.SpeedY;
@@ -236,23 +240,25 @@ function tick() {
 
   BallH.update();
 
-  RacketH.racket1PosY += RacketH.racket1Speed;
 
-  if (RacketH.racket1PosY + RacketH.height > RacketHArea.height) {
-    RacketH.racket1PosY = RacketHArea.height - RacketH.height - 2;
-  }
-  if (RacketH.racket1PosY < 0) {
-    RacketH.racket1PosY = 0;
-  }
+  racket1.posY += racket1.speed;
 
-  RacketH.racket2PosY += RacketH.racket2Speed;
-  if (RacketH.racket2PosY + RacketH.height > RacketHArea.height) {
-    RacketH.racket2PosY = RacketHArea.height - RacketH.height - 2;
+  if (racket1.posY + RacketHeight > RacketHArea.height) {
+    racket1.posY = RacketHArea.height - RacketHeight;
+  }
+  if (racket1.posY < 0) {
+    racket1.posY = 0;
   }
 
-  if (RacketH.racket2PosY < 0) {
-    RacketH.racket2PosY = 0;
+  racket2.posY += racket2.speed;
+  if (racket2.posY + RacketHeight > RacketHArea.height) {
+    racket2.posY = RacketHArea.height - RacketHeight;
   }
-  RacketH.update();
+
+  if (racket2.posY < 0) {
+    racket2.posY = 0;
+  }
+  racket1.update();
+  racket2.update();
   requestAnimationFrame(tick);
 }
