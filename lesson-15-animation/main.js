@@ -38,8 +38,7 @@ function Ball(width, height, x, y, speedX, speedY) {
 
   self.update = function () {
     var BallObj = document.getElementById('ball');
-    BallObj.style.left = self.PosX + "px";
-    BallObj.style.top = self.PosY + "px";
+    BallObj.style.transform = 'translateX(' + self.PosX + 'px) translateY(' + self.PosY + 'px)';
   }
 }
 
@@ -64,8 +63,7 @@ function Racket(width, height, posX, posY, speed, id) {
 
   self.update = function () {
     var racketObj = document.getElementById(self.id);
-    racketObj.style.left = self.posX + "px";
-    racketObj.style.top = self.posY + "px";
+    racketObj.style.transform = 'translateX(' + self.posX + 'px) translateY(' + self.posY + 'px)';
   }
 }
 
