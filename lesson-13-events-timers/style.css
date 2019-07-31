@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.clockFace {
+  position: relative;
+  background: gray;
+  border-radius: 50%;
+}
+
+.numbers {
+  position: absolute;
+  border-radius: 50%;
+  background: brown;
+  text-align: center;
+  line-height: 2em;
+}
+
+.clockHand {
+  position: absolute;
+  border-radius: 0.25em;
+  background: black;
+  transform-origin: center 80px;
+  opacity: 0.75;
+}
+
+.digitalWatch {
+  position: absolute;
+  text-align: center;
+  font-size: 1.5em;
+}
